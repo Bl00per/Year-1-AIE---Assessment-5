@@ -1,0 +1,11 @@
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\bin\Debug\PixelArtProgram.pdb
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.csprojAssemblyReference.cache
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.Properties.Resources.resources
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.csproj.GenerateResource.cache
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.csproj.CoreCompileInputs.cache
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.pdb
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.pixelArtProgram.resources
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.SpriteEdit.resources
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\bin\Debug\PixelArtProgram.exe.config
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\bin\Debug\PixelArtProgram.exe
+C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram\obj\Debug\PixelArtProgram.exe
