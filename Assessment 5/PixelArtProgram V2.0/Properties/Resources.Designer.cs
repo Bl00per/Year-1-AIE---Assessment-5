@@ -63,6 +63,16 @@ namespace PixelArtProgram_V2._0.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_out_longer {
+            get {
+                object obj = ResourceManager.GetObject("arrow_out_longer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap border_all {
             get {
                 object obj = ResourceManager.GetObject("border_all", resourceCulture);

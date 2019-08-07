@@ -51,6 +51,8 @@ namespace PixelArtProgram_V2._0
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.canvasSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,14 +71,14 @@ namespace PixelArtProgram_V2._0
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.gridONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridOFFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -188,7 +190,9 @@ namespace PixelArtProgram_V2._0
             this.copyToolStripMenuItem,
             this.pasteToolStripMenuItem,
             this.toolStripSeparator7,
-            this.selectAllToolStripMenuItem});
+            this.selectAllToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.canvasSizeToolStripMenuItem});
             this.editMenu.Name = "editMenu";
             this.editMenu.Size = new System.Drawing.Size(39, 20);
             this.editMenu.Text = "&Edit";
@@ -254,6 +258,19 @@ namespace PixelArtProgram_V2._0
             this.selectAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.selectAllToolStripMenuItem.Text = "Select &All";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(161, 6);
+            // 
+            // canvasSizeToolStripMenuItem
+            // 
+            this.canvasSizeToolStripMenuItem.Image = global::PixelArtProgram_V2._0.Properties.Resources.arrow_out_longer;
+            this.canvasSizeToolStripMenuItem.Name = "canvasSizeToolStripMenuItem";
+            this.canvasSizeToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.canvasSizeToolStripMenuItem.Text = "Canvas Size";
+            this.canvasSizeToolStripMenuItem.Click += new System.EventHandler(this.spriteSheetEdit_Click);
             // 
             // viewMenu
             // 
@@ -390,28 +407,10 @@ namespace PixelArtProgram_V2._0
             this.menuStrip.TabIndex = 3;
             this.menuStrip.Text = "MenuStrip";
             // 
-            // openToolStripButton
-            // 
-            this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
-            this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
-            this.openToolStripButton.Name = "openToolStripButton";
-            this.openToolStripButton.Size = new System.Drawing.Size(21, 20);
-            this.openToolStripButton.Text = "Open";
-            // 
-            // saveToolStripButton
-            // 
-            this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
-            this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
-            this.saveToolStripButton.Name = "saveToolStripButton";
-            this.saveToolStripButton.Size = new System.Drawing.Size(21, 20);
-            this.saveToolStripButton.Text = "Save";
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(21, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(27, 6);
             // 
             // toolStrip
             // 
@@ -423,18 +422,27 @@ namespace PixelArtProgram_V2._0
             this.toolStripDropDownButton1});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(32, 354);
+            this.toolStrip.Size = new System.Drawing.Size(30, 354);
             this.toolStrip.TabIndex = 4;
             this.toolStrip.Text = "ToolStrip";
             // 
-            // pictureBox1
+            // openToolStripButton
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pictureBox1.Location = new System.Drawing.Point(28, 28);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(565, 338);
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
+            this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+            this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
+            this.openToolStripButton.Name = "openToolStripButton";
+            this.openToolStripButton.Size = new System.Drawing.Size(27, 20);
+            this.openToolStripButton.Text = "Open";
+            // 
+            // saveToolStripButton
+            // 
+            this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+            this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
+            this.saveToolStripButton.Name = "saveToolStripButton";
+            this.saveToolStripButton.Size = new System.Drawing.Size(27, 20);
+            this.saveToolStripButton.Text = "Save";
             // 
             // toolStripDropDownButton1
             // 
@@ -445,22 +453,35 @@ namespace PixelArtProgram_V2._0
             this.toolStripDropDownButton1.Image = global::PixelArtProgram_V2._0.Properties.Resources.border_all;
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(27, 20);
             this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
             // 
             // gridONToolStripMenuItem
             // 
             this.gridONToolStripMenuItem.Name = "gridONToolStripMenuItem";
-            this.gridONToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gridONToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.gridONToolStripMenuItem.Text = "Grid ON";
             this.gridONToolStripMenuItem.Click += new System.EventHandler(this.gridONToolStripMenuItem_Click);
             // 
             // gridOFFToolStripMenuItem
             // 
             this.gridOFFToolStripMenuItem.Name = "gridOFFToolStripMenuItem";
-            this.gridOFFToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gridOFFToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.gridOFFToolStripMenuItem.Text = "Grid OFF";
             this.gridOFFToolStripMenuItem.Click += new System.EventHandler(this.gridOFFToolStripMenuItem_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(30, 24);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(575, 354);
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             // 
             // pixelArtProgram
             // 
@@ -470,9 +491,12 @@ namespace PixelArtProgram_V2._0
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximumSize = new System.Drawing.Size(621, 417);
+            this.MinimumSize = new System.Drawing.Size(621, 417);
             this.Name = "pixelArtProgram";
-            this.Text = "Form1";
+            this.Text = "Todd Bless This Program";
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.toolStrip.ResumeLayout(false);
@@ -532,6 +556,8 @@ namespace PixelArtProgram_V2._0
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem gridONToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gridOFFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem canvasSizeToolStripMenuItem;
     }
 }
 

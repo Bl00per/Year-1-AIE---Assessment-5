@@ -9,3 +9,14 @@ C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram V2.0\bin\Debug\PixelA
 C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram V2.0\bin\Debug\PixelArtProgram V2.0.pdb
 C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.exe
 C:\Users\s172172\source\repos\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.pdb
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\bin\Debug\PixelArtProgram V2.0.exe.config
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\bin\Debug\PixelArtProgram V2.0.exe
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\bin\Debug\PixelArtProgram V2.0.pdb
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.csprojAssemblyReference.cache
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram_V2._0.pixelArtProgram.resources
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram_V2._0.Properties.Resources.resources
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram_V2._0.SpriteEdit.resources
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.csproj.GenerateResource.cache
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.csproj.CoreCompileInputs.cache
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.exe
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.pdb

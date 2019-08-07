@@ -15,83 +15,130 @@ namespace PixelArtProgram_V2._0
 {
     public partial class pixelArtProgram : Form
     {
-        public SpriteGrid SpriteGrid { get; private set; }
-        Bitmap drawArea;
+        public SpriteGrid grid { get; private set; }
+        SpriteEdit spriteEdit;
+        bool isDrawingGrid = true;
 
-        public Point CurrentTile { get; private set; } = new Point();
+        public Color DrawColor { get; set; }
+        public Color GridColor { get; set; }
+        int PixelSize = 10;
+
+        public Bitmap TgtBitmap { get; set; }
+
+        Point lastPoint = Point.Empty;
+
 
         public pixelArtProgram()
         {
             InitializeComponent();
+            DoubleBuffered = true;
+            GridColor = Color.DimGray;
+            DrawColor = Color.Blue;
 
-            drawArea = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            drawGrid();
+            pictureBox1.Image = new Bitmap(100, 6000);
+
+            TgtBitmap = (Bitmap)pictureBox1.Image;
+
+            MouseClick += pictureBox1_MouseClick;
+            MouseMove += pictureBox1_MouseMove;
+            Paint += pictureBox1_Paint;
+
+            spriteEdit = new SpriteEdit();
+            grid = new SpriteGrid();
         }
 
-        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        //public int PixelSize
+        //{
+        //    get { return pixelSize; }
+        //    set
+        //    {
+        //        pixelSize = value;
+        //        Invalidate();
+        //    }
+        //}
+
+        private void DrawCell(Pen pen, Rectangle rectangle, Graphics g)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                string FileName = saveFileDialog.FileName;
-            }
+            g.DrawRectangle(pen, rectangle);
         }
-
-        private void drawGrid()
-        {
-            pictureBox1.DrawToBitmap(drawArea, pictureBox1.Bounds);
-
-            Graphics g;
-            g = Graphics.FromImage(drawArea);
-
-            g.Clear(Color.White);
-
-            if (SpriteGrid == null)
-                return;
-
-
-            g.DrawImage(SpriteGrid.Image, 0, 0);
-
-            Pen pen = new Pen(Brushes.Black);
-
-            int height = pictureBox1.Height;
-            int width = pictureBox1.Width;
-            for (int y = 0; y < height; y += SpriteGrid.GridHeight + SpriteGrid.Spacing)
-            {
-                g.DrawLine(pen, 0, y, width, y);
-            }
-
-            for (int x = 0; x < width; x += SpriteGrid.GridWidth + SpriteGrid.Spacing)
-            {
-                g.DrawLine(pen, x, 0, x, height);
-            }
-
-            Pen highlight = new Pen(Brushes.Red);
-            g.DrawRectangle(highlight, CurrentTile.X * (SpriteGrid.GridWidth + SpriteGrid.Spacing),
-                CurrentTile.Y * (SpriteGrid.GridHeight + SpriteGrid.Spacing),
-                SpriteGrid.GridWidth + SpriteGrid.Spacing, SpriteGrid.GridHeight + SpriteGrid.Spacing);
-
-            g.Dispose();
-
-            //pictureBox1.Image = drawArea;
-        }
-
 
         private void spriteSheetEdit_Click(object sender, EventArgs e)
         {
-            SpriteGrid spriteGrid = new SpriteGrid();
+            spriteEdit.Text = "Canvas Size";
+            spriteEdit.BackupTempValues();
+            spriteEdit.Show();
         }
 
         private void gridONToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            drawGrid();
+            isDrawingGrid = true;
+            pictureBox1.Invalidate();
         }
 
         private void gridOFFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SpriteGrid = null;
+            isDrawingGrid = false;
+            pictureBox1.Invalidate();
         }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            if (DesignMode) return;
+
+            Graphics g = e.Graphics;
+
+            int cols = pictureBox1.Width / PixelSize;
+            int rows = pictureBox1.Height / PixelSize;
+
+            for (int x = 0; x < cols; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    if (x > pictureBox1.Image.Width || y > pictureBox1.Image.Height) continue;
+
+                    Color col = TgtBitmap.GetPixel(x, y);
+
+                    using (SolidBrush b = new SolidBrush(col))
+                    using (Pen p = new Pen(GridColor))
+                    {
+                        Rectangle rect = new Rectangle(x * PixelSize, y * PixelSize, PixelSize, PixelSize);
+                        //g.FillRectangle(b, rect);
+                        if (isDrawingGrid)
+                            DrawCell(p, rect, g);
+                    }
+                }
+            }
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left) return;
+
+            int x = e.X / PixelSize;
+            int y = e.Y / PixelSize;
+
+            if (new Point(x, y) == lastPoint) return;
+
+            Bitmap bmp = (Bitmap)pictureBox1.Image;
+            if (!(x >= pictureBox1.Width / PixelSize || x < 0 || y >= pictureBox1.Height / PixelSize || y < 0))
+            {
+                bmp.SetPixel(x, y, DrawColor);
+                pictureBox1.Image = bmp;
+                Invalidate();
+                lastPoint = new Point(x, y);
+            }
+        }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            int x = e.X / PixelSize;
+            int y = e.Y / PixelSize;
+
+            Bitmap bmp = (Bitmap)pictureBox1.Image;
+            bmp.SetPixel(x, y, DrawColor);
+            pictureBox1.Image = bmp;
+            Invalidate();
+        }
+
     }
 }
