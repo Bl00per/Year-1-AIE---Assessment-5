@@ -19,7 +19,7 @@ namespace PixelArtProgram_V2._0
         SpriteEdit spriteEdit;
         bool isDrawingGrid = true;
 
-        public Color DrawColor { get; set; }
+        public Color DrawColor { get; set; } = Color.Red;
         public Color GridColor { get; set; }
         int PixelSize = 10;
 
@@ -33,9 +33,10 @@ namespace PixelArtProgram_V2._0
             InitializeComponent();
             DoubleBuffered = true;
             GridColor = Color.DimGray;
-            DrawColor = Color.Blue;
+            DrawColor = Color.Red;
 
-            pictureBox1.Image = new Bitmap(100, 6000);
+            pictureBox1.Image = new Bitmap(1000, 1000);
+            ColorDialog colorDlg = new ColorDialog();
 
             TgtBitmap = (Bitmap)pictureBox1.Image;
 
@@ -87,8 +88,8 @@ namespace PixelArtProgram_V2._0
 
             Graphics g = e.Graphics;
 
-            int cols = pictureBox1.Width / PixelSize;
-            int rows = pictureBox1.Height / PixelSize;
+            int cols = grid.NumOfCellsX;
+            int rows = grid.NumOfCellsY;
 
             for (int x = 0; x < cols; x++)
             {
@@ -101,10 +102,12 @@ namespace PixelArtProgram_V2._0
                     using (SolidBrush b = new SolidBrush(col))
                     using (Pen p = new Pen(GridColor))
                     {
-                        Rectangle rect = new Rectangle(x * PixelSize, y * PixelSize, PixelSize, PixelSize);
-                        //g.FillRectangle(b, rect);
+                        Rectangle rect = new Rectangle((x * PixelSize) + toolStrip.Width, (y * PixelSize) + menuStrip.Height, PixelSize, PixelSize);
+                        g.FillRectangle(b, rect);
                         if (isDrawingGrid)
+                        {
                             DrawCell(p, rect, g);
+                        }
                     }
                 }
             }
@@ -114,8 +117,8 @@ namespace PixelArtProgram_V2._0
         {
             if (e.Button != MouseButtons.Left) return;
 
-            int x = e.X / PixelSize;
-            int y = e.Y / PixelSize;
+            int x = (e.X - pictureBox1.Location.X) / PixelSize;
+            int y = (e.Y - pictureBox1.Location.Y) / PixelSize;
 
             if (new Point(x, y) == lastPoint) return;
 
@@ -131,8 +134,8 @@ namespace PixelArtProgram_V2._0
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            int x = e.X / PixelSize;
-            int y = e.Y / PixelSize;
+            int x = (e.X -  pictureBox1.Location.X) / PixelSize;
+            int y = (e.Y - pictureBox1.Location.Y) / PixelSize;
 
             Bitmap bmp = (Bitmap)pictureBox1.Image;
             bmp.SetPixel(x, y, DrawColor);
@@ -140,5 +143,17 @@ namespace PixelArtProgram_V2._0
             Invalidate();
         }
 
+        private void pixelArtProgram_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                DrawColor = colorDialog1.Color;
+            }
+        }
     }
 }
