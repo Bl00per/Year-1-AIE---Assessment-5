@@ -93,9 +93,29 @@ namespace PixelArtProgram_V2._0.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap erase {
+            get {
+                object obj = ResourceManager.GetObject("erase", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap paintbrush_color {
             get {
                 object obj = ResourceManager.GetObject("paintbrush_color", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap paintbrush_color1 {
+            get {
+                object obj = ResourceManager.GetObject("paintbrush_color1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

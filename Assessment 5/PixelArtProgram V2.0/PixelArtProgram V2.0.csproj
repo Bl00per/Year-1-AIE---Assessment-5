@@ -99,6 +99,9 @@
     <None Include="Resources\color.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\erase.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\paintbrush_color.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-// This is the code for your desktop app.
-// Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
 namespace PixelArtProgram_V2._0
 {
@@ -22,6 +21,7 @@ namespace PixelArtProgram_V2._0
         public Color DrawColor { get; set; } = Color.Red;
         public Color GridColor { get; set; }
         int PixelSize = 10;
+        Color tempColor;
 
         public Bitmap TgtBitmap { get; set; }
 
@@ -31,11 +31,19 @@ namespace PixelArtProgram_V2._0
         public pixelArtProgram()
         {
             InitializeComponent();
+
+            spriteEdit = new SpriteEdit();
+            grid = new SpriteGrid();
+
             DoubleBuffered = true;
             GridColor = Color.DimGray;
             DrawColor = Color.Red;
+            tempColor = DrawColor;
 
-            pictureBox1.Image = new Bitmap(1000, 1000);
+            pictureBox1.Width = (grid.NumOfCellsX * PixelSize);
+            pictureBox1.Height = (grid.NumOfCellsY * PixelSize);
+
+            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             ColorDialog colorDlg = new ColorDialog();
 
             TgtBitmap = (Bitmap)pictureBox1.Image;
@@ -44,10 +52,50 @@ namespace PixelArtProgram_V2._0
             MouseMove += pictureBox1_MouseMove;
             Paint += pictureBox1_Paint;
 
-            spriteEdit = new SpriteEdit();
-            grid = new SpriteGrid();
         }
 
+        private void SaveBmpAsPNG()
+        {
+            try
+            {
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.FileName = "Untitled.png";
+                dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|All files(*.*)|*.*";
+                dialog.FilterIndex = 1;
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    int width = grid.NumOfCellsX;
+                    int height = grid.NumOfCellsY;
+                    isDrawingGrid = false;
+                    Invalidate();
+                    
+                    // Fancy math that basically devided the thing up how much you want it enlarged by
+                    // In this case its getting increased by 10 times 16 px -> 160 px
+                    int EnlargeFactor = 10;
+                    Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
+                    for (int x = 0; x < width * EnlargeFactor; x++)
+                    {
+                        for (int y = 0; y < height * EnlargeFactor; y++)
+                        {
+                            bmp.SetPixel(x, y, TgtBitmap.GetPixel(x / EnlargeFactor, y / EnlargeFactor));
+                        }
+                    }
+
+                    //bmp is our new image, specifically for the sake of saving to disk.
+
+                    bmp.Save(dialog.FileName, ImageFormat.Png);
+
+                    isDrawingGrid = true;
+                    Invalidate();
+                }
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("There was a problem saving the file." + " Check the file permissions.");
+            }
+
+        }
         //public int PixelSize
         //{
         //    get { return pixelSize; }
@@ -153,6 +201,55 @@ namespace PixelArtProgram_V2._0
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 DrawColor = colorDialog1.Color;
+                tempColor = DrawColor;
+            }
+        }
+
+        private void eraserToolStripButton_Click(object sender, EventArgs e)
+        {
+            tempColor = DrawColor;
+            DrawColor = Color.White;
+        }
+
+        private void drawToolStripButton_Click(object sender, EventArgs e)
+        {
+            DrawColor = tempColor;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void newSprite_Click(object sender, EventArgs e)
+        {
+
+            int cols = grid.NumOfCellsX;
+            int rows = grid.NumOfCellsY;
+
+            for (int x = 0; x < cols; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    Bitmap bmp = (Bitmap)pictureBox1.Image;
+                    bmp.SetPixel(x, y, Color.White);
+                    pictureBox1.Image = bmp;
+                    Invalidate();
+                }
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveBmpAsPNG();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                //Bitmap bmp = new Bitmap();
             }
         }
     }
