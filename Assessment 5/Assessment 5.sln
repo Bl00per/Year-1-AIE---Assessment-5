@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelArtProgram", "PixelArt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelArtProgram V2.0", "PixelArtProgram V2.0\PixelArtProgram V2.0.csproj", "{2DF057BA-6365-468D-961B-E7C5361F7B27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp1", "WindowsFormsApp1\WindowsFormsApp1.csproj", "{162DC903-2DED-48E6-834B-3028E981A621}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,26 +61,6 @@ Global
 		{2DF057BA-6365-468D-961B-E7C5361F7B27}.Release|x64.Build.0 = Release|Any CPU
 		{2DF057BA-6365-468D-961B-E7C5361F7B27}.Release|x86.ActiveCfg = Release|Any CPU
 		{2DF057BA-6365-468D-961B-E7C5361F7B27}.Release|x86.Build.0 = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|ARM.Build.0 = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|x64.Build.0 = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Debug|x86.Build.0 = Debug|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|Any CPU.Build.0 = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|ARM.ActiveCfg = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|ARM.Build.0 = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|ARM64.Build.0 = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|x64.ActiveCfg = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|x64.Build.0 = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|x86.ActiveCfg = Release|Any CPU
-		{162DC903-2DED-48E6-834B-3028E981A621}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

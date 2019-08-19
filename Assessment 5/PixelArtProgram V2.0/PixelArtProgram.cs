@@ -27,6 +27,12 @@ namespace PixelArtProgram_V2._0
 
         Point lastPoint = Point.Empty;
 
+        SaveFileDialog dialog = new SaveFileDialog();
+
+        //public System.Drawing.Size Size { get; set; }
+        //pixelArtProgram Form1 = new pixelArtProgram();
+
+        bool hasUserSaved;
 
         public pixelArtProgram()
         {
@@ -48,6 +54,10 @@ namespace PixelArtProgram_V2._0
 
             TgtBitmap = (Bitmap)pictureBox1.Image;
 
+            hasUserSaved = false;
+
+            dialog.FileName = "Untitled.png";
+
             MouseClick += pictureBox1_MouseClick;
             MouseMove += pictureBox1_MouseMove;
             Paint += pictureBox1_Paint;
@@ -56,46 +66,68 @@ namespace PixelArtProgram_V2._0
 
         private void SaveBmpAsPNG()
         {
-            try
+            dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|All files(*.*)|*.*";
+            dialog.FilterIndex = 1;
+
+            if (hasUserSaved == false)
             {
-                SaveFileDialog dialog = new SaveFileDialog();
-                dialog.FileName = "Untitled.png";
-                dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|All files(*.*)|*.*";
-                dialog.FilterIndex = 1;
-
-                if (dialog.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    int width = grid.NumOfCellsX;
-                    int height = grid.NumOfCellsY;
-                    isDrawingGrid = false;
-                    Invalidate();
-                    
-                    // Fancy math that basically devided the thing up how much you want it enlarged by
-                    // In this case its getting increased by 10 times 16 px -> 160 px
-                    int EnlargeFactor = 10;
-                    Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
-                    for (int x = 0; x < width * EnlargeFactor; x++)
+                    if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        for (int y = 0; y < height * EnlargeFactor; y++)
+                        int width = grid.NumOfCellsX;
+                        int height = grid.NumOfCellsY;
+                        isDrawingGrid = false;
+                        hasUserSaved = true;
+                        Invalidate();
+
+                        // Fancy math that basically devided the thing up how much you want it enlarged by
+                        // In this case its getting increased by 10 times 16 px -> 160 px
+                        int EnlargeFactor = 1;
+                        Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
+                        for (int x = 0; x < width * EnlargeFactor; x++)
                         {
-                            bmp.SetPixel(x, y, TgtBitmap.GetPixel(x / EnlargeFactor, y / EnlargeFactor));
+                            for (int y = 0; y < height * EnlargeFactor; y++)
+                            {
+                                bmp.SetPixel(x, y, TgtBitmap.GetPixel(x / EnlargeFactor, y / EnlargeFactor));
+                            }
                         }
+
+                        //bmp is our new image, specifically for the sake of saving to disk.
+
+                        bmp.Save(dialog.FileName, ImageFormat.Png);
+
+                        isDrawingGrid = true;
+                        Invalidate();
                     }
-
-                    //bmp is our new image, specifically for the sake of saving to disk.
-
-                    bmp.Save(dialog.FileName, ImageFormat.Png);
-
-                    isDrawingGrid = true;
-                    Invalidate();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("There was a problem saving the file." + " Check the file permissions.");
                 }
             }
-            catch(Exception)
+            else
             {
-                MessageBox.Show("There was a problem saving the file." + " Check the file permissions.");
-            }
+                int width = grid.NumOfCellsX;
+                int height = grid.NumOfCellsY;
 
+                int EnlargeFactor = 10;
+                Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
+                for (int x = 0; x < width * EnlargeFactor; x++)
+                {
+                    for (int y = 0; y < height * EnlargeFactor; y++)
+                    {
+                        bmp.SetPixel(x, y, TgtBitmap.GetPixel(x / EnlargeFactor, y / EnlargeFactor));
+                    }
+                }
+
+                bmp.Save(dialog.FileName, ImageFormat.Png);
+
+                isDrawingGrid = true;
+                Invalidate();
+            }
         }
+
         //public int PixelSize
         //{
         //    get { return pixelSize; }
@@ -182,7 +214,7 @@ namespace PixelArtProgram_V2._0
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            int x = (e.X -  pictureBox1.Location.X) / PixelSize;
+            int x = (e.X - pictureBox1.Location.X) / PixelSize;
             int y = (e.Y - pictureBox1.Location.Y) / PixelSize;
 
             Bitmap bmp = (Bitmap)pictureBox1.Image;
@@ -247,9 +279,37 @@ namespace PixelArtProgram_V2._0
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|All files(*.*)|*.*";
+            dialog.FilterIndex = 1;
+
+
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                //Bitmap bmp = new Bitmap();
+
+
+                Bitmap bmp = new Bitmap(dialog.FileName);
+                Bitmap resized = new Bitmap(bmp, new Size(bmp.Width / 15, bmp.Height / 15));
+
+                for (int i = bmp.Width / PixelSize; i > grid.NumOfCellsX; i--)
+                    grid.NumOfCellsX++;
+
+                for (int i = bmp.Height / PixelSize; i > grid.NumOfCellsY; i--)
+                    grid.NumOfCellsY++;
+
+                int width = bmp.Width + 34;
+                int height = bmp.Height + 24;
+
+                pictureBox1.Width = (grid.NumOfCellsX * PixelSize);
+                pictureBox1.Height = (grid.NumOfCellsY * PixelSize);
+
+                //pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+
+                this.Size = new Size(width, height);
+
+                TgtBitmap = resized;
+                pictureBox1.Image = resized;
+                Invalidate();
             }
         }
     }
