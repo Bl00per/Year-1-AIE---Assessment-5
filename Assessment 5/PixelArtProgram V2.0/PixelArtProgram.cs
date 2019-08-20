@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 
 namespace PixelArtProgram_V2._0
@@ -15,29 +16,35 @@ namespace PixelArtProgram_V2._0
     public partial class pixelArtProgram : Form
     {
         public SpriteGrid grid { get; private set; }
-        SpriteEdit spriteEdit;
-        bool isDrawingGrid = true;
-
         public Color DrawColor { get; set; } = Color.Red;
         public Color GridColor { get; set; }
-        int PixelSize = 10;
-        Color tempColor;
-
         public Bitmap TgtBitmap { get; set; }
 
-        Point lastPoint = Point.Empty;
+        public int cellSize
+        {
+            get { return grid.CellSize; }
+            set
+            {
+                cellSize = grid.CellSize;
+                Invalidate();
+            }
+        }
 
         SaveFileDialog dialog = new SaveFileDialog();
 
-        //public System.Drawing.Size Size { get; set; }
-        //pixelArtProgram Form1 = new pixelArtProgram();
+        SpriteEdit spriteEdit;
+        Color tempColor;
+        Point lastPoint = Point.Empty;
 
+        bool isDrawingGrid = true;
         bool hasUserSaved;
+        bool userErasing;
 
         public pixelArtProgram()
         {
             InitializeComponent();
 
+            ColorDialog colorDlg = new ColorDialog();
             spriteEdit = new SpriteEdit();
             grid = new SpriteGrid();
 
@@ -46,15 +53,18 @@ namespace PixelArtProgram_V2._0
             DrawColor = Color.Red;
             tempColor = DrawColor;
 
-            pictureBox1.Width = (grid.NumOfCellsX * PixelSize);
-            pictureBox1.Height = (grid.NumOfCellsY * PixelSize);
+            pictureBox1.Width = (grid.NumOfCellsX * cellSize);
+            pictureBox1.Height = (grid.NumOfCellsY * cellSize);
+
+            int width = (grid.NumOfCellsX * cellSize) + 60;
+            int height = (grid.NumOfCellsY * cellSize) + 75;
+            this.Size = new Size(width, height);
 
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            ColorDialog colorDlg = new ColorDialog();
-
             TgtBitmap = (Bitmap)pictureBox1.Image;
 
             hasUserSaved = false;
+            userErasing = false;
 
             dialog.FileName = "Untitled.png";
 
@@ -64,10 +74,16 @@ namespace PixelArtProgram_V2._0
 
         }
 
-        private void SaveBmpAsPNG()
+        // Enlarge factor = 1
+        private void SaveBmpAsSpritePNG()
         {
             dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|All files(*.*)|*.*";
             dialog.FilterIndex = 1;
+            dialog.RestoreDirectory = true;
+
+            int width = grid.NumOfCellsX;
+            int height = grid.NumOfCellsY;
+            int EnlargeFactor = 1;
 
             if (hasUserSaved == false)
             {
@@ -75,15 +91,12 @@ namespace PixelArtProgram_V2._0
                 {
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        int width = grid.NumOfCellsX;
-                        int height = grid.NumOfCellsY;
                         isDrawingGrid = false;
                         hasUserSaved = true;
                         Invalidate();
 
-                        // Fancy math that basically devided the thing up how much you want it enlarged by
+                        // Fancy math that basically divided the thing up how much you want it enlarged by
                         // In this case its getting increased by 10 times 16 px -> 160 px
-                        int EnlargeFactor = 1;
                         Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
                         for (int x = 0; x < width * EnlargeFactor; x++)
                         {
@@ -108,10 +121,68 @@ namespace PixelArtProgram_V2._0
             }
             else
             {
-                int width = grid.NumOfCellsX;
-                int height = grid.NumOfCellsY;
+                Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
+                for (int x = 0; x < width * EnlargeFactor; x++)
+                {
+                    for (int y = 0; y < height * EnlargeFactor; y++)
+                    {
+                        bmp.SetPixel(x, y, TgtBitmap.GetPixel(x / EnlargeFactor, y / EnlargeFactor));
+                    }
+                }
 
-                int EnlargeFactor = 10;
+                bmp.Save(dialog.FileName, ImageFormat.Png);
+
+                isDrawingGrid = true;
+                Invalidate();
+            }
+        }
+        // Enlarge factor = 10
+        private void SaveBmpAsOriginalPNG()
+        {
+            dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|All files(*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.RestoreDirectory = true;
+
+            int width = grid.NumOfCellsX;
+            int height = grid.NumOfCellsY;
+            int EnlargeFactor = 10;
+
+            if (hasUserSaved == false)
+            {
+                try
+                {
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        isDrawingGrid = false;
+                        hasUserSaved = true;
+                        Invalidate();
+
+                        // Fancy math that basically divided the thing up how much you want it enlarged by
+                        // In this case its getting increased by 10 times 16 px -> 160 px
+                        Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
+                        for (int x = 0; x < width * EnlargeFactor; x++)
+                        {
+                            for (int y = 0; y < height * EnlargeFactor; y++)
+                            {
+                                bmp.SetPixel(x, y, TgtBitmap.GetPixel(x / EnlargeFactor, y / EnlargeFactor));
+                            }
+                        }
+
+                        //bmp is our new image, specifically for the sake of saving to disk.
+
+                        bmp.Save(dialog.FileName, ImageFormat.Png);
+
+                        isDrawingGrid = true;
+                        Invalidate();
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("There was a problem saving the file." + " Check the file permissions.");
+                }
+            }
+            else
+            {
                 Bitmap bmp = new Bitmap(width * EnlargeFactor, height * EnlargeFactor);
                 for (int x = 0; x < width * EnlargeFactor; x++)
                 {
@@ -128,38 +199,55 @@ namespace PixelArtProgram_V2._0
             }
         }
 
-        //public int PixelSize
-        //{
-        //    get { return pixelSize; }
-        //    set
-        //    {
-        //        pixelSize = value;
-        //        Invalidate();
-        //    }
-        //}
-
-        private void DrawCell(Pen pen, Rectangle rectangle, Graphics g)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            g.DrawRectangle(pen, rectangle);
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|" +
+                "Bitmap Files (*.bmp;*.dib)|*.bmp;*.dib|All Picture Files |*.png;*.jpeg;*.jpeg;*.jpe,*;jfif;*.gif;*.bmp|All files (*.*)|*.*";
+            dialog.FilterIndex = 5;
+            dialog.RestoreDirectory = true;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap bmp = new Bitmap(dialog.FileName);
+                Bitmap resized = new Bitmap(bmp, new Size(bmp.Width, bmp.Height));
+
+                for (int i = bmp.Width / cellSize; i > grid.NumOfCellsX; i--)
+                    grid.NumOfCellsX++;
+
+                for (int i = bmp.Height / cellSize; i > grid.NumOfCellsY; i--)
+                    grid.NumOfCellsY++;
+
+                // It just works
+                if ((bmp.Width / (bmp.Width / grid.NumOfCellsX)) == 0 || bmp.Height / (bmp.Height / grid.NumOfCellsY) == 0)
+                {
+                    resized = new Bitmap(bmp, new Size(bmp.Width, bmp.Height));
+                }
+                else
+                {
+                    resized = new Bitmap(bmp, new Size(bmp.Width / (bmp.Width / grid.NumOfCellsX), bmp.Height / (bmp.Height / grid.NumOfCellsY)));
+                }
+
+                int width = (grid.NumOfCellsX * cellSize) + 60;
+                int height = (grid.NumOfCellsY * cellSize) + 75;
+
+                pictureBox1.Width = (grid.NumOfCellsX * cellSize);
+                pictureBox1.Height = (grid.NumOfCellsY * cellSize);
+
+                this.Size = new Size(width, height);
+
+                TgtBitmap = resized;
+                pictureBox1.Image = resized;
+                Invalidate();
+            }
         }
-
-        private void spriteSheetEdit_Click(object sender, EventArgs e)
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            spriteEdit.Text = "Canvas Size";
-            spriteEdit.BackupTempValues();
-            spriteEdit.Show();
+            SaveBmpAsSpritePNG();
         }
-
-        private void gridONToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveOriginalStripMenuItem_Click(object sender, EventArgs e)
         {
-            isDrawingGrid = true;
-            pictureBox1.Invalidate();
-        }
-
-        private void gridOFFToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            isDrawingGrid = false;
-            pictureBox1.Invalidate();
+            SaveBmpAsOriginalPNG();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -167,6 +255,15 @@ namespace PixelArtProgram_V2._0
             if (DesignMode) return;
 
             Graphics g = e.Graphics;
+
+            pictureBox1.Width = (grid.NumOfCellsX * cellSize);
+            pictureBox1.Height = (grid.NumOfCellsY * cellSize);
+
+            // Need to change picturebox.image width/height
+
+            int width = (grid.NumOfCellsX * cellSize) + 60;
+            int height = (grid.NumOfCellsY * cellSize) + 75;
+            this.MinimumSize = new Size(width, height);
 
             int cols = grid.NumOfCellsX;
             int rows = grid.NumOfCellsY;
@@ -182,7 +279,7 @@ namespace PixelArtProgram_V2._0
                     using (SolidBrush b = new SolidBrush(col))
                     using (Pen p = new Pen(GridColor))
                     {
-                        Rectangle rect = new Rectangle((x * PixelSize) + toolStrip.Width, (y * PixelSize) + menuStrip.Height, PixelSize, PixelSize);
+                        Rectangle rect = new Rectangle((x * cellSize) + toolStrip.Width, (y * cellSize) + menuStrip.Height, cellSize, cellSize);
                         g.FillRectangle(b, rect);
                         if (isDrawingGrid)
                         {
@@ -192,70 +289,53 @@ namespace PixelArtProgram_V2._0
                 }
             }
         }
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            int x = (e.X - pictureBox1.Location.X) / cellSize;
+            int y = (e.Y - pictureBox1.Location.Y) / cellSize;
 
+            Bitmap bmp = (Bitmap)pictureBox1.Image;
+
+            // Check if user is erasing
+            if (!userErasing)
+                bmp.SetPixel(x, y, DrawColor);
+            else
+                bmp.SetPixel(x, y, Color.Empty);
+
+            pictureBox1.Image = bmp;
+            Invalidate();
+        }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left) return;
 
-            int x = (e.X - pictureBox1.Location.X) / PixelSize;
-            int y = (e.Y - pictureBox1.Location.Y) / PixelSize;
+            int x = (e.X - pictureBox1.Location.X) / cellSize;
+            int y = (e.Y - pictureBox1.Location.Y) / cellSize;
 
             if (new Point(x, y) == lastPoint) return;
 
             Bitmap bmp = (Bitmap)pictureBox1.Image;
-            if (!(x >= pictureBox1.Width / PixelSize || x < 0 || y >= pictureBox1.Height / PixelSize || y < 0))
+            if (!(x >= pictureBox1.Width / cellSize || x < 0 || y >= pictureBox1.Height / cellSize || y < 0))
             {
-                bmp.SetPixel(x, y, DrawColor);
+                // Check if the user is erasing
+                if (!userErasing)
+                    bmp.SetPixel(x, y, DrawColor);
+                else
+                    bmp.SetPixel(x, y, Color.Empty);
+
                 pictureBox1.Image = bmp;
                 Invalidate();
                 lastPoint = new Point(x, y);
             }
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void DrawCell(Pen pen, Rectangle rectangle, Graphics g)
         {
-            int x = (e.X - pictureBox1.Location.X) / PixelSize;
-            int y = (e.Y - pictureBox1.Location.Y) / PixelSize;
-
-            Bitmap bmp = (Bitmap)pictureBox1.Image;
-            bmp.SetPixel(x, y, DrawColor);
-            pictureBox1.Image = bmp;
-            Invalidate();
-        }
-
-        private void pixelArtProgram_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                DrawColor = colorDialog1.Color;
-                tempColor = DrawColor;
-            }
-        }
-
-        private void eraserToolStripButton_Click(object sender, EventArgs e)
-        {
-            tempColor = DrawColor;
-            DrawColor = Color.White;
-        }
-
-        private void drawToolStripButton_Click(object sender, EventArgs e)
-        {
-            DrawColor = tempColor;
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
+            g.DrawRectangle(pen, rectangle);
         }
 
         private void newSprite_Click(object sender, EventArgs e)
         {
-
             int cols = grid.NumOfCellsX;
             int rows = grid.NumOfCellsY;
 
@@ -270,46 +350,124 @@ namespace PixelArtProgram_V2._0
                 }
             }
         }
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void spriteSheetEdit_Click(object sender, EventArgs e)
         {
-            SaveBmpAsPNG();
+            spriteEdit.programReference = this;
+            spriteEdit.SetTextBoxValues();
+            spriteEdit.Text = "Canvas Size";
+            spriteEdit.BackupTempValues();
+            spriteEdit.Show();
+        }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void drawToolStripButton_Click(object sender, EventArgs e)
+        {
+            DrawColor = tempColor;
+            userErasing = false;
+        }
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                DrawColor = colorDialog1.Color;
+                tempColor = DrawColor;
+            }
+        }
+        private void eraserToolStripButton_Click(object sender, EventArgs e)
+        {
+            tempColor = DrawColor;
+            userErasing = true;
+        }
+        private void gridONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            isDrawingGrid = true;
+            Invalidate();
+        }
+        private void gridOFFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            isDrawingGrid = false;
+            Invalidate();
+        }
+
+        private void PrintFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ReadFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "PNG (*.png)|*.png|JPEG (*.jpeg;*.jpeg;*.jpe;*.jfif)|*.jpeg|GIF (*.gif)|*.gif|All files(*.*)|*.*";
+
+            dialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             dialog.FilterIndex = 1;
-
-
+            dialog.RestoreDirectory = true;
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
+                StreamReader myStream = new StreamReader(dialog.FileName);
 
+                DrawColor = Color.FromName(myStream.ReadLine()); 
+                myStream.Close();
+            }
+        }
 
-                Bitmap bmp = new Bitmap(dialog.FileName);
-                Bitmap resized = new Bitmap(bmp, new Size(bmp.Width / 15, bmp.Height / 15));
+        private void redToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
 
-                for (int i = bmp.Width / PixelSize; i > grid.NumOfCellsX; i--)
-                    grid.NumOfCellsX++;
+            dialog.FileName = "color.txt";
+            dialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.RestoreDirectory = true;
 
-                for (int i = bmp.Height / PixelSize; i > grid.NumOfCellsY; i--)
-                    grid.NumOfCellsY++;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter myStream = new StreamWriter(dialog.FileName);
 
-                int width = bmp.Width + 34;
-                int height = bmp.Height + 24;
+                myStream.WriteLine("Red");
+                myStream.Close();
 
-                pictureBox1.Width = (grid.NumOfCellsX * PixelSize);
-                pictureBox1.Height = (grid.NumOfCellsY * PixelSize);
+            }
+        }
 
-                //pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+        private void greenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
 
-                this.Size = new Size(width, height);
+            dialog.FileName = "color.txt";
+            dialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.RestoreDirectory = true;
 
-                TgtBitmap = resized;
-                pictureBox1.Image = resized;
-                Invalidate();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter myStream = new StreamWriter(dialog.FileName);
+
+                myStream.WriteLine("Green");
+                myStream.Close();
+
+            }
+        }
+
+        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+
+            dialog.FileName = "color.txt";
+            dialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.RestoreDirectory = true;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter myStream = new StreamWriter(dialog.FileName);
+
+                myStream.WriteLine("Blue");
+                myStream.Close();
+
             }
         }
     }

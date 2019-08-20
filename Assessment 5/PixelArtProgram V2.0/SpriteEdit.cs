@@ -12,81 +12,111 @@ namespace PixelArtProgram_V2._0
 {
     public partial class SpriteEdit : Form
     {
-        public SpriteGrid grid { get; private set; }
+        public pixelArtProgram programReference;
 
         int height;
         int width;
-        int CellSize;
 
         int tempHeight;
         int tempWidth;
-        int tempCellSize;
 
         public SpriteEdit()
         {
             InitializeComponent();
-            grid = new SpriteGrid();
+        }
 
-            textBoxHeight.Text = grid.NumOfCellsY.ToString();
-            textBoxWidth.Text = grid.NumOfCellsX.ToString();
-            textBoxCellSize.Text = grid.CellSize.ToString();
+        public void SetTextBoxValues()
+        {
+            textBoxHeight.Text = programReference.grid.NumOfCellsY.ToString();
+            textBoxWidth.Text = programReference.grid.NumOfCellsX.ToString();
         }
 
         public void BackupTempValues()
         {
-            tempHeight = grid.NumOfCellsY;
-            tempWidth = grid.NumOfCellsX;
-            tempCellSize = grid.CellSize;
+            tempHeight = programReference.grid.NumOfCellsY;
+            tempWidth = programReference.grid.NumOfCellsX;
         }
-
         public void RestoreTempValues()
         {
-            grid.NumOfCellsY = tempHeight;
-            grid.NumOfCellsX = tempWidth;
-            grid.CellSize = tempCellSize;
+            programReference.grid.NumOfCellsY = tempHeight;
+            programReference.grid.NumOfCellsX = tempWidth;
 
-            textBoxHeight.Text = grid.NumOfCellsY.ToString();
-            textBoxWidth.Text = grid.NumOfCellsX.ToString();
-            textBoxCellSize.Text = grid.CellSize.ToString();
-        }
-
-        private void textBoxHeight_TextChanged(object sender, EventArgs e)
-        {
-            if (int.TryParse(textBoxHeight.Text, out height) == true)
-            {
-                grid.NumOfCellsY = height;
-            }
+            textBoxHeight.Text = programReference.grid.NumOfCellsY.ToString();
+            textBoxWidth.Text = programReference.grid.NumOfCellsX.ToString();
         }
 
         private void textBoxWidth_TextChanged(object sender, EventArgs e)
         {
             if (int.TryParse(textBoxWidth.Text, out width) == true)
             {
-                grid.NumOfCellsX = width;
+                int x = 0;
+                Int32.TryParse(textBoxWidth.Text, out x);
+
+                width = x;
             }
         }
-
-        private void textBoxCellSize_TextChanged(object sender, EventArgs e)
+        private void textBoxHeight_TextChanged(object sender, EventArgs e)
         {
-            if (int.TryParse(textBoxCellSize.Text, out CellSize) == true)
+            if (int.TryParse(textBoxHeight.Text, out height) == true)
             {
-                grid.CellSize = CellSize;
+                int y = 0;
+                Int32.TryParse(textBoxHeight.Text, out y);
+
+                height = y;
             }
         }
 
+        // Apply values to the grid size
+        public void buttonApply_Click(object sender, EventArgs e)
+        {
+            // Logic checks
+            if (width > 160)
+            {
+                width = 160;
+            }
+            if (width <= 0)
+            {
+                width = tempWidth;
+            }
+            if (height > 95)
+            {
+                height = 95;
+            }
+            if (height <= 0)
+            {
+                height = tempHeight;
+            }
+            if (height > 0 && width > 0)
+            {
+                // Set the NumOfCells to equal user input
+                programReference.grid.NumOfCellsX = width;
+                programReference.grid.NumOfCellsY = height;
+
+                // Update both windows
+                Invalidate();
+                programReference.Invalidate();
+                Hide();
+            }
+        }
+        // Restore the previous input values if the user cancels
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             Hide();
             RestoreTempValues();
         }
 
-        private void buttonApply_Click(object sender, EventArgs e)
+        // Only allows numbers to be inputted
+        private void textBoxHeight_KeyPress(object sender, KeyPressEventArgs e)
         {
-            height = grid.NumOfCellsY;
-            width = grid.NumOfCellsX;
-            CellSize = grid.CellSize;
-
-            Hide();
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+        private void textBoxWidth_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+        private void textBoxCellSize_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
     }
 }
