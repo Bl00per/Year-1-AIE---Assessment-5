@@ -39,6 +39,7 @@ namespace PixelArtProgram_V2._0
         bool isDrawingGrid = true;
         bool hasUserSaved;
         bool userErasing;
+        public bool canvasSizeChanged;
 
         public pixelArtProgram()
         {
@@ -65,6 +66,7 @@ namespace PixelArtProgram_V2._0
 
             hasUserSaved = false;
             userErasing = false;
+            canvasSizeChanged = false;
 
             dialog.FileName = "Untitled.png";
 
@@ -210,7 +212,7 @@ namespace PixelArtProgram_V2._0
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 Bitmap bmp = new Bitmap(dialog.FileName);
-                Bitmap resized = new Bitmap(bmp, new Size(bmp.Width, bmp.Height));
+                Bitmap resized;
 
                 for (int i = bmp.Width / cellSize; i > grid.NumOfCellsX; i--)
                     grid.NumOfCellsX++;
@@ -219,14 +221,7 @@ namespace PixelArtProgram_V2._0
                     grid.NumOfCellsY++;
 
                 // It just works
-                if ((bmp.Width / (bmp.Width / grid.NumOfCellsX)) == 0 || bmp.Height / (bmp.Height / grid.NumOfCellsY) == 0)
-                {
-                    resized = new Bitmap(bmp, new Size(bmp.Width, bmp.Height));
-                }
-                else
-                {
-                    resized = new Bitmap(bmp, new Size(bmp.Width / (bmp.Width / grid.NumOfCellsX), bmp.Height / (bmp.Height / grid.NumOfCellsY)));
-                }
+                resized = new Bitmap(bmp, new Size(grid.NumOfCellsX, grid.NumOfCellsY));
 
                 int width = (grid.NumOfCellsX * cellSize) + 60;
                 int height = (grid.NumOfCellsY * cellSize) + 75;
@@ -256,14 +251,23 @@ namespace PixelArtProgram_V2._0
 
             Graphics g = e.Graphics;
 
-            pictureBox1.Width = (grid.NumOfCellsX * cellSize);
-            pictureBox1.Height = (grid.NumOfCellsY * cellSize);
+            if (canvasSizeChanged)
+            {
+                pictureBox1.Width = (grid.NumOfCellsX * cellSize);
+                pictureBox1.Height = (grid.NumOfCellsY * cellSize);
 
-            // Need to change picturebox.image width/height
+                // Need to update picturebox.image width/height
+                Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+                pictureBox1.Image = new Bitmap(bmp, pictureBox1.Width, pictureBox1.Height);
+                TgtBitmap = (Bitmap)pictureBox1.Image;
 
-            int width = (grid.NumOfCellsX * cellSize) + 60;
-            int height = (grid.NumOfCellsY * cellSize) + 75;
-            this.MinimumSize = new Size(width, height);
+                int width = (grid.NumOfCellsX * cellSize) + 60;
+                int height = (grid.NumOfCellsY * cellSize) + 75;
+                this.MinimumSize = new Size(width, height);
+                this.Size = new Size(width, height);
+
+                canvasSizeChanged = false;
+            }
 
             int cols = grid.NumOfCellsX;
             int rows = grid.NumOfCellsY;
@@ -392,11 +396,7 @@ namespace PixelArtProgram_V2._0
             Invalidate();
         }
 
-        private void PrintFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        // Read color from .txt file
         private void ReadFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -409,11 +409,12 @@ namespace PixelArtProgram_V2._0
             {
                 StreamReader myStream = new StreamReader(dialog.FileName);
 
-                DrawColor = Color.FromName(myStream.ReadLine()); 
+                DrawColor = Color.FromName(myStream.ReadLine());
                 myStream.Close();
             }
         }
 
+        // Print color to .txt file
         private void redToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -432,7 +433,6 @@ namespace PixelArtProgram_V2._0
 
             }
         }
-
         private void greenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -451,7 +451,6 @@ namespace PixelArtProgram_V2._0
 
             }
         }
-
         private void blueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();

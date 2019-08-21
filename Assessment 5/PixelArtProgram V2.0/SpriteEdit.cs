@@ -92,6 +92,8 @@ namespace PixelArtProgram_V2._0
                 programReference.grid.NumOfCellsX = width;
                 programReference.grid.NumOfCellsY = height;
 
+                programReference.canvasSizeChanged = true;
+
                 // Update both windows
                 Invalidate();
                 programReference.Invalidate();

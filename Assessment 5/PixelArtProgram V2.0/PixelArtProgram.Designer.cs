@@ -206,7 +206,6 @@ namespace PixelArtProgram_V2._0
             this.PrintFileToolStripMenuItem.ShowShortcutKeys = false;
             this.PrintFileToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.PrintFileToolStripMenuItem.Text = "&Print Color to File";
-            this.PrintFileToolStripMenuItem.Click += new System.EventHandler(this.PrintFileToolStripMenuItem_Click);
             // 
             // indexToolStripMenuItem
             // 
