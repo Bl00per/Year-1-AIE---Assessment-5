@@ -366,6 +366,16 @@ namespace PixelArtProgram_V2._0
         {
             Close();
         }
+        private void indexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SpriteHelp help = new SpriteHelp();
+            help.Show();
+        }
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SpriteAbout about = new SpriteAbout();
+            about.Show();
+        }
 
         private void drawToolStripButton_Click(object sender, EventArgs e)
         {
@@ -469,5 +479,6 @@ namespace PixelArtProgram_V2._0
 
             }
         }
+
     }
 }

@@ -1,5 +1,0 @@
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V3.0\obj\Debug\PixelArtProgram V3.0.csprojAssemblyReference.cache
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V3.0\obj\Debug\PixelArtProgram_V3._0.PixelEditor.resources
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V3.0\obj\Debug\PixelArtProgram_V3._0.Properties.Resources.resources
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V3.0\obj\Debug\PixelArtProgram V3.0.csproj.GenerateResource.cache
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V3.0\obj\Debug\PixelArtProgram V3.0.csproj.CoreCompileInputs.cache

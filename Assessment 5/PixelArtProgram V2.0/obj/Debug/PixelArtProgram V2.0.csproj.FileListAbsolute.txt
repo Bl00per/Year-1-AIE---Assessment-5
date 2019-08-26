@@ -20,3 +20,8 @@ C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram 
 C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.csproj.CoreCompileInputs.cache
 C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.exe
 C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.pdb
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram_V2._0.SpriteHelp.resources
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\bin\Debug\DarkUI.dll
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\bin\Debug\DarkUI.pdb
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram_V2._0.SpriteAbout.resources
+C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\PixelArtProgram V2.0\obj\Debug\PixelArtProgram V2.0.csproj.CopyComplete

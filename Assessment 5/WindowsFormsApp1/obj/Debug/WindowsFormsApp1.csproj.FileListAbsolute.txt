@@ -1,3 +1,0 @@
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.cache
-C:\Users\s172172\Desktop\Year 1 AIE - Assessment 5\Assessment 5\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CoreCompileInputs.cache
