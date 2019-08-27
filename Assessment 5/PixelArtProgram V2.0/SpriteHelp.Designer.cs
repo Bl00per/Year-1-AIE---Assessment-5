@@ -164,18 +164,18 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(12, 151);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(234, 13);
+            this.label6.Size = new System.Drawing.Size(223, 13);
             this.label6.TabIndex = 11;
-            this.label6.Text = "&Ctrl+S - Save Image as sprite format (e.g. 16x16)";
+            this.label6.Text = "&Ctrl+S - Save Image as sprite size (e.g. 16x16)";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(12, 166);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(208, 26);
+            this.label7.Size = new System.Drawing.Size(189, 26);
             this.label7.TabIndex = 12;
-            this.label7.Text = "&Ctrl+Shift+S - Save Image as image format \r\n(e.g. 160x160)";
+            this.label7.Text = "&Ctrl+Shift+S - Save Image in larger size\r\n(e.g. 160x160)";
             // 
             // SpriteHelp
             // 
